@@ -1,0 +1,5 @@
+Cmake
+streamlit
+flask
+Flask-Cors
+psutil

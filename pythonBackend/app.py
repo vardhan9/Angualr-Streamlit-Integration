@@ -5,7 +5,7 @@ from flask_cors import CORS
 import psutil
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
-'''def find_process_by_port(port):
+def find_process_by_port(port):
     for proc in psutil.process_iter(['pid', 'name', 'connections']):
         for conn in proc.info['connections']:
             if conn.laddr.port == port:
@@ -15,7 +15,7 @@ CORS(app)  # Enable CORS for all routes
 def stop_process_by_port(port):
     proc = find_process_by_port(port)
     if proc:
-        os.kill(proc.pid, 9)'''
+        os.kill(proc.pid, 9)
 @app.route('/', methods=['POST'])
 def update_code():
     data = request.data
@@ -25,10 +25,10 @@ def update_code():
     print(data)
     with open('streamlit_app.py', 'w') as f:
         f.write(data)
-    #stop_process_by_port(8501)
+    stop_process_by_port(8501)
     # Restart Streamlit server
     #os.system('pkill -f streamlit')
-    #subprocess.Popen(['streamlit', 'run','--server.port', '8501', 'streamlit_app.py'])
+    subprocess.Popen(['streamlit', 'run','--server.port', '8501', 'streamlit_app.py'])
 
     return jsonify({'status': 'success'})
 

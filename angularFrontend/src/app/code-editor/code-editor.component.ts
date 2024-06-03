@@ -26,7 +26,7 @@ export class CodeEditorComponent {
       });
   }
 
-  server_address= "http://127.0.0.1:5000/"
+  server_address= "http://localhost:5000/"
   data = `import streamlit as st \nst.write("sample app") \nst.title("Welcome to first Streamlit App")\nst.header("Cutting-edge developments are underway. Stay tuned ....")`
 
   onClick(data: string){

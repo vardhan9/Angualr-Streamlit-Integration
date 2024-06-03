@@ -1,2 +1,2 @@
 import streamlit as st 
-st.write("sample app") 
+st.write("Sample app") 

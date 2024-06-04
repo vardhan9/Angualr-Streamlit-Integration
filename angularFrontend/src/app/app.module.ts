@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { FormsModule } from '@angular/forms';
+import { CreateMultiAppsComponent } from './create-multi-apps/create-multi-apps.component';
 
 
 
@@ -13,7 +14,8 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
-    CodeEditorComponent
+    CodeEditorComponent,
+    CreateMultiAppsComponent,
   ],
   imports: [
     BrowserModule,

@@ -17,18 +17,29 @@ def stop_process_by_port(port):
     if proc:
         os.kill(proc.pid, 9)
 @app.route('/', methods=['POST'])
+
 def update_code():
-    data = request.data
-    data = data.decode('unicode_escape')
-    data = data.strip('"')
-    #code = data.get('code')
-    print(data)
-    with open('streamlit_app.py', 'w') as f:
-        f.write(data)
-    stop_process_by_port(8501)
-    # Restart Streamlit server
-    #os.system('pkill -f streamlit')
-    subprocess.Popen(['streamlit', 'run','--server.port', '8501', 'streamlit_app.py'])
+    data = request.get_json()
+    print('--->', data)
+    if not data:
+        return jsonify({'status': 'error', 'message': 'No data provided'}), 400
+
+    app_name = data.get('app_name')
+    code = data.get('code')
+    port = data.get('port')
+
+    if not app_name or not code or not port:
+        return jsonify({'status': 'error', 'message': 'Missing app_name, code, or port'}), 400
+
+    app_filename = f'{app_name}.py'
+    with open(app_filename, 'w') as f:
+        f.write(code)
+
+    # Stop existing Streamlit server on the specified port
+    stop_process_by_port(port)
+
+    # Start Streamlit server on the specified port
+    subprocess.Popen(['streamlit', 'run', '--server.port', str(port), app_filename])
 
     return jsonify({'status': 'success'})
 

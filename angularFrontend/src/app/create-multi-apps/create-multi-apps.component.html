@@ -1,0 +1,10 @@
+
+<div>
+    <h2>Create Streamlit App</h2>
+    <input [(ngModel)]="appName" placeholder="Enter app name">
+    <input [(ngModel)]="port" type="number" placeholder="Enter port">
+    <textarea [(ngModel)]="code" rows="10" cols="50" placeholder="Enter Streamlit code"></textarea>
+    <button (click)="createApp()">Create App</button>
+    <div *ngIf="message">{{ message }}</div>
+  </div>
+  

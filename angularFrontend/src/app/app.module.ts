@@ -6,24 +6,27 @@ import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { FormsModule } from '@angular/forms';
 import { CreateMultiAppsComponent } from './create-multi-apps/create-multi-apps.component';
-
-
-
-
+import { AppRoutingModule } from './app-routing.modules';
+import { EditorPreviewComponent } from "./editor-preview/editor-preview.component";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CodeEditorComponent,
-    CreateMultiAppsComponent,
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    FormsModule,
-    MonacoEditorModule.forRoot()
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        CodeEditorComponent,
+        CreateMultiAppsComponent,
+        EditorPreviewComponent,
+    ],
+
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        FormsModule,
+        MonacoEditorModule.forRoot(),
+       
+        EditorPreviewComponent
+    ],
+
+    providers: [],
+    bootstrap: [AppComponent],
 })
 export class AppModule { }

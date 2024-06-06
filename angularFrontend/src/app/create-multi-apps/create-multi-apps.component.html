@@ -1,10 +1,44 @@
 
-<div>
-    <h2>Create Streamlit App</h2>
-    <input [(ngModel)]="appName" placeholder="Enter app name">
-    <input [(ngModel)]="port" type="number" placeholder="Enter port">
-    <textarea [(ngModel)]="code" rows="10" cols="50" placeholder="Enter Streamlit code"></textarea>
-    <button (click)="createApp()">Create App</button>
-    <div *ngIf="message">{{ message }}</div>
-  </div>
+  <div>
+    <h2>Streamlit App Manager</h2>
+    <button (click)="showForm = !showForm">{{ showForm ? 'Hide Form' : 'Create New App' }}</button>
+    <button (click)="openEditor()">Open Editor</button>
+
+    <!--div *ngIf="showForm">
+      <h3>Create Streamlit App</h3>
+      <input [(ngModel)]="appName" placeholder="Enter app name">
+      <input [(ngModel)]="port" type="number" placeholder="Enter port">
+      <textarea [(ngModel)]="code" rows="10" cols="50" placeholder="Enter Streamlit code"></textarea>
+      <button (click)="createApp()">Create App</button>
+    </div>
   
+    <div *ngIf="message">{{ message }}</div>
+  
+    <div *ngIf="streamlitAppUrl">
+      <h3>Streamlit App Output</h3>
+      <iframe src="http://localhost:8501/" width="80%" height="400px"></iframe>
+    </div>
+  </div>
+
+
+  <h2>Select Streamlit App</h2>
+
+<select [(ngModel)]="selectedApp">
+  <option value="">Select App</option>
+  <option value="app1">App 1</option>
+  <option value="app2">App 2</option>
+</select>
+
+<button (click)="startStreamlitApp()" (click)="toggleEditor()">Start App</button>
+<div *ngIf="showEditor">
+    <textarea [(ngModel)]="code" rows="10"></textarea>
+    <button (click)="onCreateApp()">Save</button>
+  </div>
+<h2>Streamlit Apps</h2>
+
+<ul *ngIf="apps.length > 0">
+  <li *ngFor="let app of apps">
+    {{ app.name }} - {{ app.status }}
+    <div *ngIf="app.data">{{ app.data }}</div>
+  </li>
+</ul-->

@@ -16,7 +16,7 @@ export class CodeEditorComponent {
   constructor(private http: HttpClient) { }
 
 
-  onSave() {
+ /* onSave() {
     this.http.post('/api/update-code', { code: this.code })
       .subscribe(response => {
         console.log('Code updated successfully');
@@ -38,4 +38,4 @@ export class CodeEditorComponent {
     this.onClick(this.data).subscribe()
   }
 
-}
+}*/

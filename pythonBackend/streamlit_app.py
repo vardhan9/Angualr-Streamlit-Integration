@@ -1,2 +1,2 @@
-import streamlit as st 
-st.write("Sample app") 
+import streamlit as st
+st.title('New Fliq App')

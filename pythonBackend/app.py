@@ -3,6 +3,8 @@ import os
 import subprocess
 from flask_cors import CORS
 import psutil
+env = os.environ.copy()
+os.environ['BROWSER'] = 'none'
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 def find_process_by_port(port):
@@ -18,9 +20,9 @@ def stop_process_by_port(port):
         os.kill(proc.pid, 9)
 @app.route('/', methods=['POST'])
 def update_code():
-    data = request.data
-    data = data.decode('unicode_escape')
-    data = data.strip('"')
+    data = request.get_json()
+    data = data.get('code')
+    #data = data.strip('"')
     #code = data.get('code')
     print(data)
     with open('streamlit_app.py', 'w') as f:

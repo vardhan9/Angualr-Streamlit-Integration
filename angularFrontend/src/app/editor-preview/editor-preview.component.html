@@ -1,0 +1,10 @@
+<div class="split-container">
+    <textarea class="bordered-textarea" [(ngModel)]="code" rows="10" cols="50" placeholder="Enter Streamlit code"></textarea>
+
+    <iframe id="streamlit-iframe1" style="width: 500px; height: 400px;" src="http://localhost:8501/"></iframe>
+</div>
+<div class="editorButtons">
+    <button (click)="createApp()">Execute</button>
+    <button>Clear</button>
+    <button>Terminate</button>
+</div>

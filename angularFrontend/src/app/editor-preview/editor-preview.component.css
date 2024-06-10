@@ -1,0 +1,30 @@
+.split-container {
+    display: flex; /* Enable flexbox layout */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+    gap: 10px; /* Gap between elements */
+    
+  }
+  
+  .split-container textarea{
+    border: 1px solid black;
+    flex: 1;
+  }
+  .split-container iframe {
+    border: 1px solid black; /* Remove default border */
+    flex: 1; /* Make elements fill available space equally */
+  }
+
+  .bordered-textarea {
+    background-color: rgb(0, 0, 0);
+    color: rgb(1, 248, 6);
+    font-size: 25px;
+  }
+
+  .editorButtons{
+    margin-top: 10px;
+    flex: 1;
+    display: flex; /* Enable flexbox layout */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+    gap: 10px; /* Gap between elements */
+  }
+  

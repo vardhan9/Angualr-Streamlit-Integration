@@ -1,7 +1,11 @@
 [server]
 headless = true
 port = 8501
+runOnSave = true
 
 [browser]
 gatherUsageStats = false
 serverAddress = "localhost"
+
+[global]
+showDeployOption = false

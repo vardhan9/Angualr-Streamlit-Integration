@@ -20,12 +20,14 @@ export class EditorPreviewComponent {
   message: string | null = null;
   name:any
   streamlitAppUrl: string | null = null;
+  editorOptions = {theme: 'vs-dark', language: 'python'};
   executeCode(code: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}`, {code });
   }
 
   createApp() {
     if (this.appName && this.port && this.code) {
+      console.log(this.code);
       this.executeCode(this.code).subscribe(
         response => {
           //this.message = `App ${this.appName} created successfully on port ${this.port}!`;

@@ -24,10 +24,13 @@ def update_code():
     data = data.get('code')
     #data = data.strip('"')
     #code = data.get('code')
+    data = f'import streamlit as st\nhide_streamlit_style = """\n<style>\n#MainMenu {{visibility: hidden;}}\nfooter {{visibility: hidden;}}\n</style>\n"""\nst.markdown(hide_streamlit_style, unsafe_allow_html=True)\n{data}'
     print(data)
     with open('streamlit_app.py', 'w') as f:
         f.write(data)
-    stop_process_by_port(8501)
+    
+    #Comment below code to run , to see changes in same browser
+    #stop_process_by_port(8501) # this kills the process on 8501 and runs whole streamlit_app.py file again
     # Restart Streamlit server
     #os.system('pkill -f streamlit')
     subprocess.Popen(['streamlit', 'run','--server.port', '8501', 'streamlit_app.py'])

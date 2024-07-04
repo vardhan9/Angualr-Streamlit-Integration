@@ -1,7 +1,8 @@
 <div class="split-container">
-    <textarea class="bordered-textarea" [(ngModel)]="code" rows="10" cols="50" placeholder="Enter Streamlit code"></textarea>
+    <!--textarea class="bordered-textarea" [(ngModel)]="code" rows="10" cols="50" placeholder="Enter Streamlit code"></textarea-->
+    <ngx-monaco-editor class="bordered-textarea" style="width: 700px; height: 400px;" [options]="editorOptions" [(ngModel)]="code"></ngx-monaco-editor>
 
-    <iframe id="streamlit-iframe1" style="width: 500px; height: 400px;" src="http://localhost:8501/"></iframe>
+    <iframe id="streamlit-iframe1" style="width: 500px; height: 400px;" src="http://localhost:8501"></iframe>
 </div>
 <div class="editorButtons">
     <button (click)="createApp()">Execute</button>

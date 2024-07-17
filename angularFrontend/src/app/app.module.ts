@@ -25,7 +25,7 @@ import { AppRoutingModule } from './app-routing.module';
     FormsModule,
     MonacoEditorModule.forRoot(),
     RouterModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

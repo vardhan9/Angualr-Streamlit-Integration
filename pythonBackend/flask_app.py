@@ -43,12 +43,7 @@ def create_app():
         return jsonify({"message": "App name is already taken"}), 400
 
     # Create the Streamlit app script
-    streamlit_script = f"""
-    import streamlit as st
-
-    st.title("{app_name}")
-    st.write("This app is running on port {port_number}")
-    """
+    streamlit_script = f"""import streamlit as st\nst.title("{app_name}")\nst.write("This app is running on port {port_number}")"""
     
     with open(streamlit_script_path, 'w') as f:
         f.write(streamlit_script)

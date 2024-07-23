@@ -3,6 +3,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
 import os
+import socket
+import platform
+
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -29,9 +32,41 @@ def write_apps_metadata(apps_metadata):
     with open(file_path, 'w') as f:
         json.dump(apps_metadata, f, indent=2)
 
+def is_port_in_use(port):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        return s.connect_ex(('localhost', port)) == 0
 # Initialize apps metadata on startup
 initialize_apps_metadata()
-
+# Function to find the process using a specific port
+def find_process_using_port(port):
+    try:
+        if platform.system() == "Windows":
+            result = subprocess.check_output(f'netstat -ano | findstr :{port}', shell=True)
+            lines = result.splitlines()
+            for line in lines:
+                parts = line.split()
+                if len(parts) >= 5 and parts[1].endswith(f':{port}'):
+                    return int(parts[4])
+        else:  # For Linux and macOS
+            result = subprocess.check_output(['lsof', '-i', f':{port}'])
+            lines = result.splitlines()
+            for line in lines:
+                parts = line.split()
+                if parts[1].isdigit():
+                    return int(parts[1])
+    except Exception as e:
+        return None
+    
+    # Function to terminate the process using a specific port
+def terminate_process(pid):
+    try:
+        if platform.system() == "Windows":
+            subprocess.check_output(f'taskkill /PID {pid} /F', shell=True)
+        else:  # For Linux and macOS
+            os.kill(pid, 9)
+        return True
+    except Exception as e:
+        return False
 # Route to create an app and save metadata to JSON file
 @app.route('/create-app', methods=['POST'])
 def create_app():
@@ -49,6 +84,10 @@ def create_app():
     for app in apps_metadata:
         if app['appName'] == app_name:
             return jsonify({"message": "App name is already taken"}), 400
+    
+    # Check if the port is already in use
+    if is_port_in_use(port_number):
+        return jsonify({"message": f"Port {port_number} is already in use"}), 400
 
     # Save app metadata
     streamlit_script = f"""import streamlit as st\nst.title("{app_name}")\nst.write("This app is running on port {port_number}")"""
@@ -88,24 +127,35 @@ def terminate_app():
 
     # Load existing apps metadata
     apps_metadata = read_apps_metadata()
-
+    print(apps_metadata)
     # Find the app to be terminated
     app_to_terminate = next((app for app in apps_metadata if app['appName'] == app_name), None)
     if not app_to_terminate:
         return jsonify({"message": "App not found"}), 404
-
+    port_number = app_to_terminate['portNumber']
     # Remove app metadata
     apps_metadata = [app for app in apps_metadata if app['appName'] != app_name]
 
     # Write updated apps metadata back to JSON file
     write_apps_metadata(apps_metadata)
 
-    # Delete the app script file
-    app_file_path = f'{app_name}.py'
+    # Find the process using the port
+    pid = find_process_using_port(port_number)
+    if pid and terminate_process(pid):
+        # Remove app metadata
+        apps_metadata = [app for app in apps_metadata if app['appName'] != app_name]
+
+        # Write updated apps metadata back to JSON file
+        write_apps_metadata(apps_metadata)
+
+        # Delete the app script file
+    app_file_path = os.path.join(os.getcwd(), f'{app_name}.py')
     if os.path.exists(app_file_path):
         os.remove(app_file_path)
 
-    return jsonify({"message": "App terminated successfully"}), 200
+        return jsonify({"message": f"App '{app_name}' terminated successfully on port {port_number}"}), 200
+    else:
+        return jsonify({"message": "Error terminating app or app not running"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

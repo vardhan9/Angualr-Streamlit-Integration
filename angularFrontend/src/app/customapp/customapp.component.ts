@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 interface App {
   appName: string;
@@ -24,7 +25,7 @@ export class CustomappComponent {
   successTerminateMessage: string = '';
   apps: App[] = [];
   uniqueApps: App[] = []; // To store unique apps
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
     this.fetchApps();
@@ -73,8 +74,10 @@ export class CustomappComponent {
   }
 
   editApp(app: App) {
-    console.log('Edit app:', app);
+    
     // Implement edit logic here
+    console.log('openEditor clicked')
+    this.router.navigate(['editor-preview'])
   }
 
   terminateApp(app: App) {
@@ -109,5 +112,6 @@ export class CustomappComponent {
     }, 5000);
   }
 
+ 
 }
 

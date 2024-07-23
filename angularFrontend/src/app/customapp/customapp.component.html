@@ -18,8 +18,10 @@
     <div *ngIf="successMessage" class="success-message">
       {{ successMessage }}
     </div>
+    <div *ngIf="successTerminateMessage" class="success-terminate-message">
+      {{ successTerminateMessage }}
+    </div>
   </div>
-
   <div>
     <h2>Created Apps</h2>
     <table>
@@ -28,13 +30,18 @@
           <th>App Name</th>
           <th>Port</th>
           <th>Status</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let app of apps">
+        <tr *ngFor="let app of uniqueApps">
           <td>{{ app.appName }}</td>
           <td>{{ app.portNumber }}</td>
           <td>{{ app.status }}</td>
+          <td>
+            <button (click)="editApp(app)">Edit</button>
+            <button (click)="terminateApp(app)">Terminate</button>
+          </td>
         </tr>
       </tbody>
     </table>

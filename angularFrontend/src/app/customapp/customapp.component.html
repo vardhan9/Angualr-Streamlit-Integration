@@ -1,3 +1,4 @@
+<div *ngIf="!selectedApp">
 <div>
     <h1>Create Streamlit App</h1>
     <form (ngSubmit)="onSubmit()">
@@ -23,7 +24,7 @@
       {{ successTerminateMessage }}
     </div>
   </div>
-  <div>
+  
     <h2>Created Apps</h2>
     <table>
       <thead>
@@ -47,3 +48,13 @@
       </tbody>
     </table>
   </div>
+  
+  <div *ngIf="selectedApp">
+    <app-editor-preview [selectedApp]="selectedApp"></app-editor-preview>
+    <button (click)="goBack()">Back to Apps</button>
+  </div>
+  
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+

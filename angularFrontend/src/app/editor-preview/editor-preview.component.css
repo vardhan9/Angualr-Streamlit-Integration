@@ -27,4 +27,24 @@
     flex-wrap: wrap; /* Allow wrapping if needed */
     gap: 10px; /* Gap between elements */
   }
+
+
+  .split-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .bordered-textarea {
+    border: 1px solid #ccc;
+  }
+  
+  .editorButtons {
+    margin-top: 10px;
+  }
+  
+  .success-message {
+    color: green;
+    margin-top: 10px;
+  }
+  
   

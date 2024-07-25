@@ -25,6 +25,7 @@ export class CustomappComponent {
   successTerminateMessage: string = '';
   apps: App[] = [];
   uniqueApps: App[] = []; // To store unique apps
+  selectedApp: App | null = null;
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
@@ -73,12 +74,11 @@ export class CustomappComponent {
       });
   }
 
-  editApp(app: App) {
-    
-    // Implement edit logic here
-    console.log('openEditor clicked')
-    this.router.navigate(['editor-preview'])
+  editApp(app: App): void {
+    this.selectedApp = app;
+    console.log(app.portNumber)
   }
+ 
 
   terminateApp(app: App) {
     this.http.post<any>(`http://localhost:5000/terminate-app`, { appName: app.appName })
@@ -112,6 +112,9 @@ export class CustomappComponent {
     }, 5000);
   }
 
- 
+  goBack(): void {
+    this.selectedApp = null;
+  }
+
 }
 

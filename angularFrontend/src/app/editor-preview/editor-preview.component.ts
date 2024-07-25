@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -9,21 +9,54 @@ import { Observable } from 'rxjs';
   templateUrl: './editor-preview.component.html',
   styleUrl: './editor-preview.component.css'
 })
-export class EditorPreviewComponent {
-
+export class EditorPreviewComponent implements OnInit {
+  @Input() selectedApp: any;
+  code: string = '';
+  editorOptions = { theme: 'vs-dark', language: 'python' };
+  successMessage: string = '';
   private apiUrl = 'http://localhost:5000/';
-  constructor(private http: HttpClient){}
-  showForm = false;
   appName: string = 'temp_editor';
   port: number = 8501;
-  code: string = `import streamlit as st\nst.title('New App')`;
+  //: string = `import streamlit as st\nst.title('New App')`;
   message: string | null = null;
   name:any
   streamlitAppUrl: string | null = null;
-  editorOptions = {theme: 'vs-dark', language: 'python'};
+  //editorOptions = {theme: 'vs-dark', language: 'python'};
   executeCode(code: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}`, {code });
   }
+  constructor(private http: HttpClient){}
+  ngOnInit(): void {
+    if (this.selectedApp) {
+      this.fetchAppCode();
+      console.log(this.selectedApp.portNumber)
+    }
+  }
+
+  fetchAppCode(): void {
+    this.http.get<{ code: string }>(`http://localhost:5000/get-app-code?appName=${this.selectedApp.appName}`)
+      .subscribe(data => {
+        this.code = data.code;
+      });
+  }
+
+  updateApp(): void {
+    const payload = { appName: this.selectedApp.appName, code: this.code };
+    this.http.post('http://localhost:5000/update-app', payload)
+      .subscribe(() => {
+        this.successMessage = `${this.selectedApp.appName} updated successfully`;
+        setTimeout(() => this.successMessage = '', 5000);
+      });
+  }
+
+  clear(): void {
+    this.code = '';
+  }
+
+
+
+
+
 
 
 

@@ -156,6 +156,30 @@ def terminate_app():
         return jsonify({"message": f"App '{app_name}' terminated successfully on port {port_number}"}), 200
     else:
         return jsonify({"message": "Error terminating app or app not running"}), 500
+    
+    # Route to get app code for editing
+@app.route('/get-app-code', methods=['GET'])
+def get_app_code():
+    app_name = request.args.get('appName')
+    app_file_path = os.path.join(os.getcwd(), f'{app_name}.py')
+    if os.path.exists(app_file_path):
+        with open(app_file_path, 'r') as f:
+            code = f.read()
+        return jsonify({"code": code}), 200
+    return jsonify({"message": "App not found"}), 404
+
+# Route to update app code
+@app.route('/update-app', methods=['POST'])
+def update_app():
+    data = request.get_json()
+    app_name = data['appName']
+    code = data['code']
+    app_file_path = os.path.join(os.getcwd(), f'{app_name}.py')
+    if os.path.exists(app_file_path):
+        with open(app_file_path, 'w') as f:
+            f.write(code)
+        return jsonify({"message": "App updated successfully"}), 200
+    return jsonify({"message": "App not found"}), 404
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

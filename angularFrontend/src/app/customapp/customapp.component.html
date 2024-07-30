@@ -7,6 +7,9 @@
       
       <label for="portNumber">Port Number:</label>
       <input type="number" id="portNumber" [(ngModel)]="portNumber" name="portNumber" required>
+
+      <label for="isPublic">Public:</label>
+      <input type="checkbox" id="isPublic" name="isPublic">
       
       <button type="submit">Create App</button>
       
@@ -24,7 +27,7 @@
       {{ successTerminateMessage }}
     </div>
   </div>
-  
+  <div *ngIf="!(appService.selectedApp$ | async)"></div>
     <h2>Created Apps</h2>
     <table>
       <thead>
@@ -49,12 +52,8 @@
     </table>
   </div>
   
-  <div *ngIf="selectedApp">
+  <div *ngIf="appService.selectedApp$ | async as selectedApp">
     <app-editor-preview [selectedApp]="selectedApp"></app-editor-preview>
-    <button (click)="goBack()">Back to Apps</button>
+    <!--button (click)="goBack()">Back to Apps</button-->
   </div>
   
-  <div *ngIf="successMessage" class="success-message">
-    {{ successMessage }}
-  </div>
-

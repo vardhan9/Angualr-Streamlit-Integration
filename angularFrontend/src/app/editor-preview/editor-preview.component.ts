@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AppService } from '../app.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-editor-preview',
@@ -21,15 +24,20 @@ export class EditorPreviewComponent implements OnInit {
   message: string | null = null;
   name:any
   streamlitAppUrl: string | null = null;
+  safeUrl: SafeResourceUrl | null = null;
+  showEditor: boolean = false;  // Flag to control the visibility of the editor
   //editorOptions = {theme: 'vs-dark', language: 'python'};
   executeCode(code: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}`, {code });
   }
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private appService: AppService,  private sanitizer: DomSanitizer,private router: Router){}
   ngOnInit(): void {
     if (this.selectedApp) {
       this.fetchAppCode();
       console.log(this.selectedApp.portNumber)
+      this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`http://localhost:${this.selectedApp.portNumber}`);
+      console.log('safeUrl: ', this.safeUrl);
+      this.showEditor = false;
     }
   }
 
@@ -54,10 +62,12 @@ export class EditorPreviewComponent implements OnInit {
   }
 
 
-
-
-
-
+  goBack(): void {
+    this.showEditor = false;  // Hide the editor
+    this.safeUrl = null;  // Reset the safeUrl
+    this.selectedApp = null;  // Reset the selectedApp
+    this.router.navigate(['']);
+  }
 
 
   createApp() {
@@ -76,6 +86,7 @@ export class EditorPreviewComponent implements OnInit {
       );
     }
   }
+
 
 
 }

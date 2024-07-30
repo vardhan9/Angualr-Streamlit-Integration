@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "appName": "app3",
+    "portNumber": 9113,
+    "status": "Running"
+  },
+  {
+    "appName": "app4",
+    "portNumber": 9114,
+    "status": "Running"
+  }
+]

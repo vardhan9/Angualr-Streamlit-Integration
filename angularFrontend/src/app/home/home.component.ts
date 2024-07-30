@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd  } from '@angular/router';
+import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-home',
   //standalone: true,
@@ -8,7 +9,15 @@ import { Router } from '@angular/router';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  constructor(private router: Router) {}
+  showHeader: boolean = true;
+  constructor(private router: Router) {
+    /*this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.showHeader = event.url !== '/customapp';
+    });*/
+  }
+  
   clickNewApp(){
     this.router.navigate(['customapp']);
     console.log('new app clicked')

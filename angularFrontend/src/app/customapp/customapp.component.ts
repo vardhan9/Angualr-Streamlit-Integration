@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-
+import { AppService } from '../app.service';
+import { SafeResourceUrl } from '@angular/platform-browser';
 interface App {
   appName: string;
   portNumber: number;
@@ -18,7 +19,7 @@ interface App {
 })
 export class CustomappComponent {
   appName: string = '';
-  portNumber: number = 0;
+  portNumber: number | null = null;
   errorMessage: string = '';
   successMessage: string = '';
   appNameTaken: string = '';
@@ -26,10 +27,14 @@ export class CustomappComponent {
   apps: App[] = [];
   uniqueApps: App[] = []; // To store unique apps
   selectedApp: App | null = null;
-  constructor(private http: HttpClient, private router: Router) { }
+  showEditor: boolean = false;
+  safeUrl: SafeResourceUrl | null = null;
+
+  constructor(private http: HttpClient, private router: Router, public appService: AppService) { }
 
   ngOnInit() {
     this.fetchApps();
+    this.showEditor = true;
   }
 
   onSubmit() {
@@ -45,6 +50,7 @@ export class CustomappComponent {
         this.clearMessage();
         //this.errorMessage = '';  // Clear the error message on success
         this.fetchApps();
+        this.resetForm();  // Reset form fields
       }, error => {
         if (error.status === 400 && error.error.message === "Port is already in use") {
           this.errorMessage = 'Port is already in use';
@@ -62,6 +68,10 @@ export class CustomappComponent {
       });
   }
 
+  resetForm(): void {
+    this.appName = '';
+    this.portNumber = null;
+  }
 
   fetchApps() {
     this.http.get<App[]>('http://localhost:5000/get-apps')
@@ -77,6 +87,9 @@ export class CustomappComponent {
   editApp(app: App): void {
     this.selectedApp = app;
     console.log(app.portNumber)
+    this.appService.setSelectedApp(app);
+    //this.router.navigate(['editor-preview']);
+    //this.router.navigate([''])
   }
  
 
@@ -113,8 +126,9 @@ export class CustomappComponent {
   }
 
   goBack(): void {
-    this.selectedApp = null;
+    this.showEditor = false;  // Hide the editor
+    this.safeUrl = null;  // Reset the safeUrl
+    this.selectedApp = null;  // Reset the selectedApp
   }
-
 }
 

@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { RouterModule} from '@angular/router';
 import { CustomappComponent } from './customapp/customapp.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AppService } from './app.service';
 
 
 
@@ -17,7 +18,8 @@ import { AppRoutingModule } from './app-routing.module';
     AppComponent,
     EditorPreviewComponent,
     HomeComponent,
-    CustomappComponent
+    CustomappComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -27,7 +29,7 @@ import { AppRoutingModule } from './app-routing.module';
     RouterModule,
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [AppService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

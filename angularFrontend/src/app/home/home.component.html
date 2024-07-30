@@ -1,4 +1,6 @@
-<div class="header">
-    <h2>Apps</h2>
-    <button (click)="clickNewApp()">New App</button>
-  </div>
+<div *ngIf="showHeader" class="header">
+  <h2>Apps</h2>
+  <button (click)="clickNewApp()">New App</button>
+</div>
+<!--app-customapp></app-customapp-->
+<router-outlet></router-outlet>
